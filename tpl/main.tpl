@@ -8,7 +8,7 @@
     </head>
     <body>
         <div class="grey">
-            Er hat es schon <span class="big"><?php echo $count ?>x</span> getan!<br>
+            <?php echo $sex ?> hat es schon <span class="big"><?php echo $count ?>x</span> getan!<br><br>
             <a href="<?php echo $conf['baseurl'].$page ?>/inc">Schon wieder!</a>
         </div>
     </body>

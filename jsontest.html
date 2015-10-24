@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>TODO supply a title</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <script type="text/javascript" src="js/jquery-2.1.4.min.js"></script>
+        <script type="text/javascript">
+            $(document).ready(function() {
+                $("#testwithout").click(function() {
+                    var name = $("#name").val();
+                    $.get(name, function(data) {
+                        $("#output").html(data);
+                    });
+                });
+                $("#test").click(function() {
+                    var name = $("#name").val();
+                    $.get(name+'/inc', function(data) {
+                        $("#output").html(data);
+                    });
+                });
+            });
+        </script>
+    </head>
+    <body>
+        <div>
+            <input id="name" type="text" placeholder="name">
+            <input id="testwithout" type="button" value="Test without increment">
+            <input id="test" type="button" value="Test with increment">
+        </div>
+        <div id="output">
+            
+        </div>
+    </body>
+</html>

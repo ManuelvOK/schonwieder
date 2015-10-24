@@ -5,36 +5,62 @@ require_once 'config/config.php';
 $page = filter_input(INPUT_GET, "page");
 $inc = filter_input(INPUT_GET, "inc");
 $db = mysqli_connect($conf['db']['host'], $conf['db']['user'], $conf['db']['pass'], $conf['db']['database']);
+
+$sex = "Es";
+if ($_SERVER['SERVER_NAME'] == $conf['domain']['male'])
+    $sex = "Er";
+else if ($_SERVER['SERVER_NAME'] == $conf['domain']['female'])
+    $sex = "Sie";
+
 if ($db->connect_errno)
     echo "Failed to connect to MySQL: " . $mysqli->connect_error;
 
-$query = "SELECT * FROM ".$db->real_escape_string($conf['db']['prefix'])."count";
-$result = $db->query($query);
+$result = getCount();
 
-$row = NULL;
+if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest') {
+    if ($inc)
+        inc();
+    
+    echo json_encode(getCount()['count']);
+    exit();
+}
 
-while ($row = $result->fetch_assoc())
-    if ($page == $row['name'])
-        break;
-if ($row) {
+if ($result) {
     if ($inc) {
-        $db->query("
-            UPDATE ".$conf['db']['prefix']."count 
-            SET count = count + 1
-            WHERE name = \"".$db->real_escape_string($page)."\"
-        ") or die("NONONO");
+        inc();
         header("Location: ".$conf['baseurl'].$page);
     }
-    $query = "SELECT count FROM ".$db->real_escape_string($conf['db']['prefix'])."count WHERE name = \"".$page."\"";
-    $result = $db->query($query);
-    $count = $result->fetch_assoc()['count'];
+    $count = $result['count'];
     include('tpl/main.tpl');
 }
 else {
-    $db->query("
-            INSERT INTO ".$db->real_escape_string($conf['db']['prefix'])."count 
-            (name, count)
-            VALUES (\"".$db->real_escape_string($page)."\",1)
-        ");
+    create();
     header("Location: ".$conf['baseurl'].$page);
+}
+
+function inc() {
+    global $db, $conf, $page;
+    $db->query("
+        UPDATE ".$conf['db']['prefix']."count 
+        SET count = count + 1
+        WHERE name = \"".$db->real_escape_string($page)."\"
+    ");
+}
+
+function create() {
+    global $db, $conf, $page;
+    $db->query("
+        INSERT INTO ".$db->real_escape_string($conf['db']['prefix'])."count 
+        (name, count)
+        VALUES (\"".$db->real_escape_string($page)."\",1)
+    ");
+}
+
+function getCount() {
+    global $db, $conf, $page;
+    return $db->query("
+        SELECT *
+        FROM ".$db->real_escape_string($conf['db']['prefix'])."count
+        WHERE name = '".$db->real_escape_string($page)."'"
+    )->fetch_assoc();
 }
