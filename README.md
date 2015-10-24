@@ -2,6 +2,7 @@
 
 ## Configuration
 
+* Copy *.htaccess_example* to *.htaccess*
 * Edit base path in *.htaccess* line 2
 * Copy *config_example.php* to *config.php*
 * configure database and baseurl settings in *config.php*

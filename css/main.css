@@ -1,0 +1,21 @@
+body {
+    height: 100%;
+    text-align: center;
+    margin: 0 auto;
+    font-family: sans-serif;
+}
+span.big {
+    font-size: 120pt;
+    color: #330000;
+}
+div.grey {
+    margin-top: 20%;
+    font-size: 60pt;
+    color: #666666;
+}
+a {
+    font-size: 20pt;
+    color: #660000;
+    font-weight: bold;
+    text-decoration: none;
+}
