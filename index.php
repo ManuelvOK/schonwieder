@@ -1,10 +1,14 @@
 <?php
-
+header('Access-Control-Allow-Origin: *');
 //error_reporting(0);
 require_once 'config/config.php';
 $page = filter_input(INPUT_GET, "page");
 $inc = filter_input(INPUT_GET, "inc");
+$xmlhttp = filter_input(INPUT_POST, "xmlhttp");
 $db = mysqli_connect($conf['db']['host'], $conf['db']['user'], $conf['db']['pass'], $conf['db']['database']);
+
+if ($db->connect_errno)
+    echo "Failed to connect to MySQL: " . $mysqli->connect_error;
 
 $sex = "Es";
 if ($_SERVER['SERVER_NAME'] == $conf['domain']['male'])
@@ -12,18 +16,21 @@ if ($_SERVER['SERVER_NAME'] == $conf['domain']['male'])
 else if ($_SERVER['SERVER_NAME'] == $conf['domain']['female'])
     $sex = "Sie";
 
-if ($db->connect_errno)
-    echo "Failed to connect to MySQL: " . $mysqli->connect_error;
-
-$result = getCount();
-
-if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest') {
-    if ($inc)
+if ($xmlhttp && filter_input(INPUT_POST, "name")) {
+    
+    $page = filter_input(INPUT_POST, "name");
+    
+    if (filter_input(INPUT_POST, "inc") === 'true')
         inc();
     
     echo json_encode(getCount()['count']);
     exit();
 }
+
+if ($page == NULL)
+    header("Location: ".$conf['baseurl']."default");
+
+$result = getCount();
 
 if ($result) {
     if ($inc) {

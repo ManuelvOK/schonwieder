@@ -9,14 +9,32 @@
             $(document).ready(function() {
                 $("#testwithout").click(function() {
                     var name = $("#name").val();
-                    $.get(name, function(data) {
-                        $("#output").html(data);
+                    $.ajax({
+                        url: 'http://erhatesschonwiedergetan.de/',
+                        method: "POST",
+                        data: {
+                            xmlhttp: true,
+                            name: name,
+                            inc: false
+                        },
+                        success : function(data) {
+                            $("#output").html(data);
+                        }
                     });
                 });
                 $("#test").click(function() {
                     var name = $("#name").val();
-                    $.get(name+'/inc', function(data) {
-                        $("#output").html(data);
+                    $.ajax({
+                        url: 'http://erhatesschonwiedergetan.de/',
+                        method: "POST",
+                        data: {
+                            xmlhttp: true,
+                            name: name,
+                            inc: true
+                        },
+                        success : function(data) {
+                            $("#output").html(data);
+                        }
                     });
                 });
             });
