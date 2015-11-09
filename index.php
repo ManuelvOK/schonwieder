@@ -17,12 +17,12 @@ else if ($_SERVER['SERVER_NAME'] == $conf['domain']['female'])
     $sex = "Sie";
 
 if ($xmlhttp && filter_input(INPUT_POST, "name")) {
-    
+
     $page = filter_input(INPUT_POST, "name");
-    
+
     if (filter_input(INPUT_POST, "inc") === 'true')
         inc();
-    
+
     echo json_encode(getCount()['count']);
     exit();
 }
@@ -38,6 +38,7 @@ if ($result) {
         header("Location: ".$conf['baseurl'].$page);
     }
     $count = $result['count'];
+    $last = strtotime($result['last']);
     include('tpl/main.tpl');
 }
 else {
@@ -48,7 +49,7 @@ else {
 function inc() {
     global $db, $conf, $page;
     $db->query("
-        UPDATE ".$conf['db']['prefix']."count 
+        UPDATE ".$conf['db']['prefix']."count
         SET count = count + 1
         WHERE name = \"".$db->real_escape_string($page)."\"
     ");
@@ -57,7 +58,7 @@ function inc() {
 function create() {
     global $db, $conf, $page;
     $db->query("
-        INSERT INTO ".$db->real_escape_string($conf['db']['prefix'])."count 
+        INSERT INTO ".$db->real_escape_string($conf['db']['prefix'])."count
         (name, count)
         VALUES (\"".$db->real_escape_string($page)."\",1)
     ");

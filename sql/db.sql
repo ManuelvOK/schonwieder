@@ -8,12 +8,13 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Tabellenstruktur für Tabelle `sw_count`
+-- table `sw_count`
 --
 
 CREATE TABLE IF NOT EXISTS `sw_count` (
   `name` varchar(100) NOT NULL,
-  `count` int(11) NOT NULL
+  `count` int(11) NOT NULL,
+  `last` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
