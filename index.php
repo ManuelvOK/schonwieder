@@ -60,7 +60,7 @@ function create() {
     $db->query("
         INSERT INTO ".$db->real_escape_string($conf['db']['prefix'])."count
         (name, count)
-        VALUES (\"".$db->real_escape_string($page)."\",1)
+        VALUES (\"".$db->real_escape_string($page)."\", 0)
     ");
 }
 
